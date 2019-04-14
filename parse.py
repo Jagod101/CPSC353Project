@@ -8,13 +8,15 @@
 import urllib
 import json
 
+itemName = raw_input("Please Enter an Item: ")
+itemColor = raw_input("Please Enter the Items Color: ")
+
+print(itemName.lower())
+print(itemColor.lower())
+
 url = "https://www.gymshark.com/products.json"
 
 response = urllib.urlopen(url)
 data = json.loads(response.read())
 
-# print(data)
-
-itemName = raw_input('Please Enter an Item: ')
-itemColor = raw_input('Please Enter the Items Color: ')
-
+print(data)
