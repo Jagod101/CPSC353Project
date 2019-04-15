@@ -19,7 +19,11 @@ url = "https://www.gymshark.com/products.json"
 response = urllib.urlopen(url)
 data = json.load(response)
 
-# print(data)
+data.encode('utf-8')
+
+#data = {k: unicode(v).encode("utf-8") for k,v in mydict.iteritems()}
+
+print(data)
 
 # shopifyDataFile = open("shopifyData.json", "w")
 # shopifyDataFile.write(json.dumps(json.loads(data), indent=4, sort_keys=True))
