@@ -33,9 +33,14 @@ def get_value(searchFor):
                         print(checkoutUrl)
                         exit()
 
+def get_titles():
+    for products in data['products']:
+        print products['title']
+                        
 # def checkout():
 
 
 
 
-print(get_value("Men's Joggers - Blackberry"))
+# print(get_value("Men's Joggers - Blackberry"))
+get_titles()
