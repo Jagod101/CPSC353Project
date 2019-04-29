@@ -7,6 +7,10 @@ import time
 from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from splinter import Browser
@@ -28,8 +32,6 @@ def get_user_details():
     global product_size
     # product_size = raw_input("Please enter the size of the product you would like to purchase, for example: Medium\n")
 
-#gains information from the user about what product they want and what size they want it in
-#completes a serach for that item
 def get_value(searchFor,product_size):
     global checkoutUrl
     get_user_details()
@@ -54,8 +56,6 @@ def checkout():
 
     driver.get(checkoutUrl)
 
-#takes in the users information
-#this is currently prefilled info for the customer but we could incorporate a database with different users data
 def information():
     # global N
     email = driver.find_element_by_id('checkout_email')
@@ -97,10 +97,7 @@ def information():
     payment_button = driver.find_element_by_name('button').click()
     time.sleep(2)
 
-
-#inputs the above collected information to the pay section
 def payment():
-
     scroll = driver.execute_script("window.scrollTo(0, 540);")
     # form = driver.find_element_by_tag_name('form')
 
@@ -110,26 +107,50 @@ def payment():
     time.sleep(2)
 
     # credit_card_number = driver.find_element_by_name('number')
-    credit_card_name = driver.find_element_by_xpath('//*[@id="number"]')
-    credit_card_number.send_keys('4342923222931029')
+    # element=driver.find_element_by_id("checkout_payment_gateway_76194820")
+    # driver.execute_script("arguments[0].click();", element)
+    # JavascriptExecutor js = (JavascriptExecutor)driver;
+    # js.executeScript("arguments[0].click();", element);
+    try:
+        payment_gateway = driver.find_element_by_id('payment-gateway-subfields-76194820')
 
-    credit_card_name = driver.find_element_by_id('name')
-    credit_card_name.send_keys('Ryan Klapper')
+        closer = driver.find_element_by_class_name('fieldset')
+        really_close = driver.find_element_by_class_name('field__input')
 
-    credit_card_expiration_date = driver.find_element_by_id('expiry')
-    credit_card_expiration_date.send_keys('06/21')
-
-    credit_card_security_value = driver.find_element_by_id('verification_value')
-    credit_card_security_value.send_keys('221')
-
-    time.sleep(2)
-    driver.close()
-
-
+        # driver.switch_to().defaultContent()
+        driver.switch_to.frame(driver.find_element_by_css_selector("iframe[id='card-fields-number-3nk14ojvg9f00000']"))
+        # driver.switch_to().frame(find_element_by_xpath('//*[@id="card-fields-number-3nk14ojvg9f00000"]'))
+        # ele = driver.find_element_by_xpath(("//iframe[contains(id, 'card-fields-number'))"))
 
 
+        # driver.switch_to().frame(ele)
 
-#Shows the user what they purchased
+        # iFrame = driver.find_element_by_tag_name('iframe')
+        # driver.switch_to.frame(iFrame)
+        print('SUCCESS')
+    except NoSuchElementException:
+        assert 0, "can't find input with number id"
+
+        credit_card_number = driver.find_element_by_id('number')
+        credit_card_number.send_keys('4342923222931029')
+
+        credit_card_name = driver.find_element_by_id('name')
+        credit_card_name.send_keys('Ryan Klapper')
+
+        credit_card_expiration_date = driver.find_element_by_id('expiry')
+        credit_card_expiration_date.send_keys('06/21')
+
+        credit_card_security_value = driver.find_element_by_id('verification_value')
+        credit_card_security_value.send_keys('221')
+
+        time.sleep(2)
+        driver.close()
+
+
+
+
+
+
 def get_titles():
     for products in data['products']:
         print products['title']
