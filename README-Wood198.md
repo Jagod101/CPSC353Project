@@ -6,3 +6,8 @@ wood198@mail.chapman.edu
 
 ## Submission 2
 - Worked on Search Function
+
+## Submission 3
+- Started looking into a database possibility
+- Added documentation
+- Worked on poster

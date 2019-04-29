@@ -28,6 +28,8 @@ def get_user_details():
     global product_size
     # product_size = raw_input("Please enter the size of the product you would like to purchase, for example: Medium\n")
 
+#gains information from the user about what product they want and what size they want it in
+#completes a serach for that item
 def get_value(searchFor,product_size):
     global checkoutUrl
     get_user_details()
@@ -52,6 +54,8 @@ def checkout():
 
     driver.get(checkoutUrl)
 
+#takes in the users information
+#this is currently prefilled info for the customer but we could incorporate a database with different users data
 def information():
     # global N
     email = driver.find_element_by_id('checkout_email')
@@ -93,6 +97,8 @@ def information():
     payment_button = driver.find_element_by_name('button').click()
     time.sleep(2)
 
+
+#inputs the above collected information to the pay section
 def payment():
 
     scroll = driver.execute_script("window.scrollTo(0, 540);")
@@ -123,7 +129,7 @@ def payment():
 
 
 
-
+#Shows the user what they purchased
 def get_titles():
     for products in data['products']:
         print products['title']
