@@ -11,7 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 import webbrowser
@@ -89,7 +89,6 @@ def information():
     address_phone.send_keys('6503886500')
     address_phone.send_keys(Keys.TAB)
 
-
     time.sleep(2)
     button = driver.find_element_by_name('button').click()
     time.sleep(2)
@@ -99,57 +98,33 @@ def information():
 
 def payment():
     scroll = driver.execute_script("window.scrollTo(0, 540);")
-    # form = driver.find_element_by_tag_name('form')
-
     radio = driver.find_element_by_id('checkout_payment_gateway_76194820')
     radio.send_keys(Keys.TAB)
 
     time.sleep(2)
-
-    # credit_card_number = driver.find_element_by_name('number')
-    # element=driver.find_element_by_id("checkout_payment_gateway_76194820")
-    # driver.execute_script("arguments[0].click();", element)
-    # JavascriptExecutor js = (JavascriptExecutor)driver;
-    # js.executeScript("arguments[0].click();", element);
     try:
-        payment_gateway = driver.find_element_by_id('payment-gateway-subfields-76194820')
-
-        closer = driver.find_element_by_class_name('fieldset')
-        really_close = driver.find_element_by_class_name('field__input')
-
         # driver.switch_to().defaultContent()
-        driver.switch_to.frame(driver.find_element_by_css_selector("iframe[id='card-fields-number-3nk14ojvg9f00000']"))
-        # driver.switch_to().frame(find_element_by_xpath('//*[@id="card-fields-number-3nk14ojvg9f00000"]'))
-        # ele = driver.find_element_by_xpath(("//iframe[contains(id, 'card-fields-number'))"))
-
-
-        # driver.switch_to().frame(ele)
-
-        # iFrame = driver.find_element_by_tag_name('iframe')
-        # driver.switch_to.frame(iFrame)
-        print('SUCCESS')
-    except NoSuchElementException:
-        assert 0, "can't find input with number id"
-
+        iframe = driver.switch_to.frame(driver.find_element_by_class_name('card-fields-iframe'))
         credit_card_number = driver.find_element_by_id('number')
         credit_card_number.send_keys('4342923222931029')
-
+        credit_card_number.send_keys(Keys.TAB)
+        time.sleep(3)
         credit_card_name = driver.find_element_by_id('name')
         credit_card_name.send_keys('Ryan Klapper')
+        credit_card_name(Keys.TAB)
 
         credit_card_expiration_date = driver.find_element_by_id('expiry')
+        # credit_card_expiration_date.click()
         credit_card_expiration_date.send_keys('06/21')
 
         credit_card_security_value = driver.find_element_by_id('verification_value')
+        # credit_card_security_value.click()
         credit_card_security_value.send_keys('221')
-
+        print('SUCCESS')
+    except NoSuchElementException:
+        assert 0, "can't find input with number id"
         time.sleep(2)
-        driver.close()
-
-
-
-
-
+        # driver.close()
 
 def get_titles():
     for products in data['products']:
