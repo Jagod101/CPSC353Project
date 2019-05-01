@@ -89,7 +89,7 @@ def information():
     address_phone.send_keys('6503886500')
     address_phone.send_keys(Keys.TAB)
 
-    time.sleep(2)
+    time.sleep(1)
     button = driver.find_element_by_name('button').click()
     time.sleep(2)
 
@@ -108,18 +108,21 @@ def payment():
         credit_card_number = driver.find_element_by_id('number')
         credit_card_number.send_keys('4342923222931029')
         credit_card_number.send_keys(Keys.TAB)
-        time.sleep(3)
+
+
+
+        cc = driver.find_element_by_tag_name('form')
         credit_card_name = driver.find_element_by_id('name')
         credit_card_name.send_keys('Ryan Klapper')
         credit_card_name(Keys.TAB)
-
-        credit_card_expiration_date = driver.find_element_by_id('expiry')
-        # credit_card_expiration_date.click()
-        credit_card_expiration_date.send_keys('06/21')
-
-        credit_card_security_value = driver.find_element_by_id('verification_value')
-        # credit_card_security_value.click()
-        credit_card_security_value.send_keys('221')
+        #
+        # credit_card_expiration_date = driver.find_element_by_id('expiry')
+        # # credit_card_expiration_date.click()
+        # credit_card_expiration_date.send_keys('06/21')
+        #
+        # credit_card_security_value = driver.find_element_by_id('verification_value')
+        # # credit_card_security_value.click()
+        # credit_card_security_value.send_keys('221')
         print('SUCCESS')
     except NoSuchElementException:
         assert 0, "can't find input with number id"
