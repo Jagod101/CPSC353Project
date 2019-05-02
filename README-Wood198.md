@@ -1,5 +1,6 @@
 # Ashley Wood
 wood198@mail.chapman.edu
+I show up as 'Unknown' in our commits
 
 ## Submission 1
 - Conceptualized the project with group
