@@ -26,7 +26,7 @@ baseUrl = "https://www.gymshark.com/cart/"
 
 resp = requests.get(url=url)
 data = resp.json() # Check the JSON Response Content documentation below
-
+start_time = time.time()
 
 def get_user_details():
     # global product_name
@@ -95,17 +95,14 @@ def information():
 
     time.sleep(1)
     button = driver.find_element_by_name('button').click()
-    time.sleep(2)
+    # time.sleep(2)
 
     payment_button = driver.find_element_by_name('button').click()
-    time.sleep(2)
+    time.sleep(1)
 
 def payment():
-    # scroll = driver.execute_script("window.scrollTo(0, 540);")
-    # radio = driver.find_element_by_id('checkout_payment_gateway_76194820')
-    # radio.send_keys(Keys.TAB)
-
-    time.sleep(1)
+    #https://stackoverflow.com/questions/16702066/how-do-i-get-around-this-error-webelement-does-not-support-indexingwebdriver
+    # time.sleep(1)
     try:
         #First frame block
         iframe = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[0]) #Frame number 1
@@ -140,6 +137,7 @@ def payment():
         div = driver.find_element_by_class_name('step__footer')
 
         print('SUCCESS')
+        print("It took", time.time() - start_time, "to find your product and checkout")
 
     except NoSuchElementException:
         assert 0, "can't find input with number id"
