@@ -10,6 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import ui
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
@@ -25,6 +26,7 @@ baseUrl = "https://www.gymshark.com/cart/"
 
 resp = requests.get(url=url)
 data = resp.json() # Check the JSON Response Content documentation below
+
 
 def get_user_details():
     # global product_name
@@ -51,10 +53,10 @@ def get_value(searchFor,product_size):
 def checkout():
     # global email
     global driver
-    #chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver'
+    chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver'
     #driver = webdriver.Chrome(executable_path=r"C:\Users\Ashley-Laptop\Downloads\chromedriver_win32\chromedriver.exe")
-    driver = webdriver.Chrome()
-    #driver = webdriver.Chrome(chromedriver)
+    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome(chromedriver)
 
     driver.get(checkoutUrl)
 
@@ -99,40 +101,43 @@ def information():
     time.sleep(2)
 
 def payment():
-    scroll = driver.execute_script("window.scrollTo(0, 540);")
-    radio = driver.find_element_by_id('checkout_payment_gateway_76194820')
-    radio.send_keys(Keys.TAB)
+    # scroll = driver.execute_script("window.scrollTo(0, 540);")
+    # radio = driver.find_element_by_id('checkout_payment_gateway_76194820')
+    # radio.send_keys(Keys.TAB)
 
-    time.sleep(2)
+    time.sleep(1)
     try:
-        # driver.switch_to().defaultContent()
-        iframe = driver.switch_to.frame(driver.find_element_by_class_name('card-fields-iframe'))
+        #First frame block
+        iframe = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[0]) #Frame number 1
         credit_card_number = driver.find_element_by_id('number')
         credit_card_number.send_keys('4342923222931029')
         credit_card_number.send_keys(Keys.TAB)
 
+        #Second frame block
         driver.switch_to.default_content()
-
-        cc = driver.switch_to.frame(driver.find_element_by_class_name('card-fields-iframe'))
+        cc = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[1]) #Frame number 2
         credit_card_name = driver.find_element_by_id('name')
         credit_card_name.send_keys("Ryan Klapper")
         credit_card_name.send_keys(Keys.TAB)
 
-        driver.switch_to.defaultContent()
-
-        cced = driver.switch_to.frame(driver.find_element_by_class_name('card-fields-iframe'))
+        #Third frame block
+        driver.switch_to.default_content()
+        cced = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[2]) #Frame number 3
         credit_card_expiration_date = driver.find_element_by_id('expiry')
         credit_card_expiration_date.send_keys('06/21')
         credit_card_expiration_date.send_keys(Keys.TAB)
 
-        driver.switch_to.defaultContent()
-
-        csv = driver.switch_to.frame(driver.find_element_by_class_name('card-fields-iframe'))
+        #Fourth frame block
+        driver.switch_to.default_content()
+        csv = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[3]) #Frame number 4
         credit_card_security_value = driver.find_element_by_id('verification_value')
         credit_card_security_value.send_keys('221')
         credit_card_security_value.send_keys(Keys.TAB)
 
-        driver.switch_to.defaultContent()
+        #Complete order button pressed
+        driver.switch_to.default_content()
+        scroll = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        div = driver.find_element_by_class_name('step__footer')
 
         print('SUCCESS')
 
