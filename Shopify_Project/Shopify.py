@@ -17,7 +17,6 @@ from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 import webbrowser
 from cart import Cart
-# from user_preferences import User
 
 url = "https://www.gymshark.com/products.json"
 baseUrl = "https://www.gymshark.com/cart/"
@@ -51,17 +50,19 @@ def get_value(searchFor,product_size):
                         payment()
 
 def checkout():
-    # global email
+    chrome_options = Options()
     global driver
     chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver'
     #driver = webdriver.Chrome(executable_path=r"C:\Users\Ashley-Laptop\Downloads\chromedriver_win32\chromedriver.exe")
     # driver = webdriver.Chrome()
-    driver = webdriver.Chrome(chromedriver)
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
 
     driver.get(checkoutUrl)
 
 def information():
     # global N
+    print('Entering shipping info...')
     email = driver.find_element_by_id('checkout_email')
     email.send_keys('ryan.klapper.MA@gmail.com')
 
@@ -93,18 +94,20 @@ def information():
     address_phone.send_keys('6503886500')
     address_phone.send_keys(Keys.TAB)
 
-    time.sleep(1)
+    time.sleep(0.5)
     button = driver.find_element_by_name('button').click()
     # time.sleep(2)
-
+    print('Selecting shipping rate...')
     payment_button = driver.find_element_by_name('button').click()
     time.sleep(1)
+
 
 def payment():
     #https://stackoverflow.com/questions/16702066/how-do-i-get-around-this-error-webelement-does-not-support-indexingwebdriver
     # time.sleep(1)
     try:
         #First frame block
+        print('Entering billing info...')
         iframe = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[0]) #Frame number 1
         credit_card_number = driver.find_element_by_id('number')
         credit_card_number.send_keys('4342923222931029')
