@@ -55,7 +55,7 @@ def checkout():
     chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver'
     #driver = webdriver.Chrome(executable_path=r"C:\Users\Ashley-Laptop\Downloads\chromedriver_win32\chromedriver.exe")
     # driver = webdriver.Chrome()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
 
     driver.get(checkoutUrl)
@@ -107,7 +107,7 @@ def payment():
     # time.sleep(1)
     try:
         #First frame block
-        print('Entering billing info...')
+        print('Submitting payment...')
         iframe = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[0]) #Frame number 1
         credit_card_number = driver.find_element_by_id('number')
         credit_card_number.send_keys('4342923222931029')
@@ -138,6 +138,8 @@ def payment():
         driver.switch_to.default_content()
         scroll = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         div = driver.find_element_by_class_name('step__footer')
+        div_button = driver.find_element_by_class_name('shown-if-js')
+        button = driver.find_elements_by_tag_name('button')[2].click()
 
         print('SUCCESS')
         print("It took", time.time() - start_time, "to find your product and checkout")
@@ -151,5 +153,5 @@ def get_titles():
     for products in data['products']:
         print products['title']
 
-print(get_value("Gymshark Legacy Luxe Tank - Chalk White", 'Medium'))
+print(get_value("Gymshark Isla Knit Sweater - Dusky Pink", 'Medium'))
 # get_titles()
