@@ -29,6 +29,7 @@ If you are running on mac:
   - You must have your chromedriver in the correct path as the folder
   - You must have selenium (webdriver,Keys,NoSuchElement,Options) ,requests, urllib, json, and time installed in python 2.7
   - In the checkout function, simply edit line 35 to the location of where the chromedriver is
+  - If you would like the browser to run headless, uncomment out the line 38
 
 ### Break down into end to end tests
 
