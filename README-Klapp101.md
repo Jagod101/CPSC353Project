@@ -3,3 +3,7 @@ Worked on search functionality and data parsing
 
 ### Submission 3
 Worked on more concise searching and parsing
+
+### Final Submission
+
+Finalized checkout and overall functionality.
