@@ -64,4 +64,4 @@ get_titles()
 * **Zach Jagoda** - *jagod101@mail.chapman.edu* - Computer Science
 
 ### Faculty Advisor
-Michael Fahy, fahy@chapman.edu
+* **Michael Fahy** - *fahy@chapman.edu*
