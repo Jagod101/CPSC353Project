@@ -1,6 +1,6 @@
 # Ashley Wood
 wood198@mail.chapman.edu
-I show up as 'Unknown' in our commits
+Sometimes I show up as 'Unknown' in our commits
 
 ## Submission 1
 - Conceptualized the project with group
@@ -12,3 +12,7 @@ I show up as 'Unknown' in our commits
 - Started looking into a database possibility
 - Added documentation
 - Worked on poster
+
+## Final Submission
+- Worked on checkout function
+- Worked on windows chromedriver

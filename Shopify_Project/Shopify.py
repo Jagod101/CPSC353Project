@@ -1,41 +1,21 @@
 import urllib
 import requests
 import json
-import os
-import pprint
 import time
-from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import ui
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
-from splinter import Browser
-import webbrowser
-from cart import Cart
 
 url = "https://www.gymshark.com/products.json"
 baseUrl = "https://www.gymshark.com/cart/"
-# r = requests.get("https://www.gymshark.com/products.json".decode('utf-8'))
-# print(r.json())
 
 resp = requests.get(url=url)
 data = resp.json() # Check the JSON Response Content documentation below
 start_time = time.time()
 
-def get_user_details():
-    # global product_name
-    # product_name = raw_input("Please enter the name of the product you would like to purchase")
-    global product_size
-    # product_size = raw_input("Please enter the size of the product you would like to purchase, for example: Medium\n")
-
 def get_value(searchFor,product_size):
     global checkoutUrl
-    get_user_details()
     for key,value in data.items():
         for products in data['products']:
             print products['title']
@@ -52,25 +32,23 @@ def get_value(searchFor,product_size):
 def checkout():
     chrome_options = Options()
     global driver
-    chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver'
-    #driver = webdriver.Chrome(executable_path=r"C:\Users\Ashley-Laptop\Downloads\chromedriver_win32\chromedriver.exe")
-    # driver = webdriver.Chrome()
-    # chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
+    chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver' #Use for mac
+    # driver = webdriver.Chrome() #Use for windows
+    # chrome_options.add_argument("--headless") #Use for mac - headless browser
+    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options) #comment this out for Windows
 
     driver.get(checkoutUrl)
 
 def information():
-    # global N
     print('Entering shipping info...')
     email = driver.find_element_by_id('checkout_email')
-    email.send_keys('ryan.klapper.MA@gmail.com')
+    email.send_keys('test@gmail.com')
 
     first_name = driver.find_element_by_id('checkout_shipping_address_first_name')
-    first_name.send_keys('Ryan')
+    first_name.send_keys('Jane')
 
     last_name = driver.find_element_by_id('checkout_shipping_address_last_name')
-    last_name.send_keys('Klapper')
+    last_name.send_keys('Doe')
 
     address_1 = driver.find_element_by_id('checkout_shipping_address_address1')
     address_1.send_keys('123 Test Road')
@@ -96,7 +74,6 @@ def information():
 
     time.sleep(0.5)
     button = driver.find_element_by_name('button').click()
-    # time.sleep(2)
     print('Selecting shipping rate...')
     payment_button = driver.find_element_by_name('button').click()
     time.sleep(1)
@@ -117,7 +94,7 @@ def payment():
         driver.switch_to.default_content()
         cc = driver.switch_to.frame(driver.find_elements_by_class_name('card-fields-iframe')[1]) #Frame number 2
         credit_card_name = driver.find_element_by_id('name')
-        credit_card_name.send_keys("Ryan Klapper")
+        credit_card_name.send_keys("Jane Doe")
         credit_card_name.send_keys(Keys.TAB)
 
         #Third frame block
@@ -137,17 +114,71 @@ def payment():
         #Complete order button pressed
         driver.switch_to.default_content()
         scroll = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        div = driver.find_element_by_class_name('step__footer')
-        div_button = driver.find_element_by_class_name('shown-if-js')
-        button = driver.find_elements_by_tag_name('button')[2].click()
 
-        print('SUCCESS')
-        print("It took", time.time() - start_time, "to find your product and checkout")
+        div_section_content = driver.find_element_by_class_name('section__content')
+        content_box = driver.find_element_by_class_name('content-box')
+        checkout_different_billing_address_false = driver.find_element_by_id('checkout_different_billing_address_false')
+        if checkout_different_billing_address_false:
+            div = driver.find_element_by_class_name('step__footer')
+            div_button = driver.find_element_by_class_name('shown-if-js')
+            button = driver.find_elements_by_tag_name('button')[2].click()
+            time.sleep(1)
+            error_message = driver.find_element_by_id('error-for-number')
+            if error_message:
+                print('Payment declined')
+                print("It took", time.time() - start_time, "to find your product and for you to be broke")
+                driver.close()
+            else:
+                print('SUCCESS')
+                print("It took", time.time() - start_time, "to find your product and checkout")
+                driver.close()
+        else:
+            checkout_billing_address_first_name = driver.find_element_by_id('checkout_billing_address_first_name')
+            checkout_billing_address_first_name.send_keys('Jane')
+
+            checkout_billing_address_last_name = driver.find_element_by_id('checkout_billing_address_last_name')
+            checkout_billing_address_last_name.send_keys('Doe')
+
+            checkout_billing_address_address1 = driver.find_element_by_id('checkout_billing_address_address1')
+            checkout_billing_address_address1.send_keys('123 Test Road')
+
+            checkout_billing_address_address2 = driver.find_element_by_id('checkout_billing_address_address2')
+            checkout_billing_address_address2.send_keys('')
+
+            checkout_billing_address_city = driver.find_element_by_id('checkout_billing_address_city')
+            checkout_billing_address_city.send_keys('Orange')
+            scroll = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            checkout_billing_address_country = driver.find_element_by_id('checkout_billing_address_country')
+            checkout_billing_address_country.send_keys('United States')
+
+            checkout_billing_address_province = driver.find_element_by_id('checkout_billing_address_province')
+            checkout_billing_address_province.send_keys('CA')
+
+            checkout_billing_address_zip = driver.find_element_by_id('checkout_billing_address_zip')
+            checkout_billing_address_zip.send_keys('92866')
+
+            checkout_billing_address_phone = driver.find_element_by_id('checkout_billing_address_phone')
+            checkout_billing_address_phone.send_keys('6503886500')
+
+
+
+            div = driver.find_element_by_class_name('step__footer')
+            div_button = driver.find_element_by_class_name('shown-if-js')
+            button = driver.find_elements_by_tag_name('button')[2].click()
+            time.sleep(1)
+            error_message = driver.find_element_by_id('error-for-number')
+            if error_message:
+                print('Payment declined')
+                print("It took", time.time() - start_time, "to find your product and for you to be broke")
+                driver.close()
+            else:
+                print('SUCCESS')
+                print("It took", time.time() - start_time, "to find your product and checkout")
+                driver.close()
 
     except NoSuchElementException:
         assert 0, "can't find input with number id"
         time.sleep(2)
-        # driver.close()
 
 def get_titles():
     for products in data['products']:
