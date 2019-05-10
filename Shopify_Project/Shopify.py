@@ -33,10 +33,9 @@ def checkout():
     chrome_options = Options()
     global driver
     chromedriver = '/Users/ryanklapper/Desktop/Shopify_Project/chromedriver' #Use for mac
-    #chromedriver = webdriver.Chrome(executable_path=r"C:\Users\Ashley-Laptop\Downloads\chromedriver_win32\chromedriver.exe") #Use for windows
     # driver = webdriver.Chrome() #Use for windows
     # chrome_options.add_argument("--headless") #Use for mac - headless browser
-    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options)
+    driver = webdriver.Chrome(chromedriver, chrome_options=chrome_options) #comment this out for Windows
 
     driver.get(checkoutUrl)
 
